@@ -356,3 +356,44 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Output
+# ============================================================
+# MINI LLAMA GENERATION
+# ============================================================
+# Device: mps
+# Loading checkpoint...
+# Checkpoint loaded.
+# Vocabulary size: 31
+# Model loaded.
+# Parameters: 709,632
+
+# Prompt:
+# the dog
+
+# Input token IDs:
+# [0, 28, 12]
+# Generated token 1: 21
+# Generated token 2: 17
+# Generated token 3: 28
+# Generated token 4: 12
+# Generated token 5: 23
+# Generated token 6: 15
+# Generated token 7: 28
+# Generated token 8: 12
+# Generated token 9: 23
+# Generated token 10: 25
+# Generated token 11: 28
+# Generated token 12: 10
+# Generated token 13: 21
+# Generated token 14: 18
+# Generated token 15: 28
+# Generated token 16: 10
+# Generated token 17: 21
+# Generated token 18: 17
+# Generated token 19: 28
+# Generated token 20: 10
+
+# ============================================================
+# RESULT
+# ============================================================
