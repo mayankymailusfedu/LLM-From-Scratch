@@ -1,16 +1,14 @@
-# Understanding Llama 4 From the Ground Up
+# Understanding LLM From the Ground Up
 
-This directory contains three educational Python lessons that explain important building blocks used in modern Large Language Models (LLMs), using simplified implementations inspired by Llama 4.
+This directory contains three Python code that explain important building blocks used in modern Large Language Models (LLMs), using simplified implementations inspired by Llama 4.
 
-The three main lessons are:
+The three main files are:
 
     tokenizer.py
     attention_weights.py
     feed_forward.py
 
-The purpose of these files is not to implement the complete production Llama 4 model.
-
-Instead, they teach the core ideas that make an LLM work:
+Instead, they showcase the core ideas that make an LLM work:
 
     Text
       ↓
@@ -29,9 +27,8 @@ Instead, they teach the core ideas that make an LLM work:
     Next-token prediction
 
 
-============================================================
-1. WHAT ARE WE BUILDING?
-============================================================
+
+# 1. WHAT ARE WE BUILDING?
 
 A Large Language Model ultimately performs a surprisingly simple task:
 
@@ -67,9 +64,8 @@ So generation becomes:
 The Transformer architecture is the machinery that helps the model make these predictions.
 
 
-============================================================
-2. FILE STRUCTURE
-============================================================
+
+# 2. FILE STRUCTURE
 
     LLM-From-Scratch/
     │
@@ -150,11 +146,9 @@ Main concepts:
     - Residual connection
 
 
-============================================================
-3. BIG PICTURE
-============================================================
+# 3. BIG PICTURE
 
-The three lessons fit together like this:
+The three files fit together like this:
 
                          TEXT
                            │
@@ -197,12 +191,10 @@ The three lessons fit together like this:
                    NEXT TOKEN
 
 
-The three lessons teach the middle part of this pipeline.
+The three files implement the middle part of this pipeline.
 
 
-============================================================
-4. LESSON 2 — TOKENIZATION
-============================================================
+# 4. File 2 — TOKENIZATION
 
 File:
 
@@ -241,9 +233,7 @@ and then:
 The actual numbers depend on the vocabulary.
 
 
-============================================================
-5. WHAT IS A TOKEN?
-============================================================
+# 5. WHAT IS A TOKEN?
 
 A token is a piece of text.
 
@@ -276,9 +266,7 @@ could potentially be represented as:
 This allows the tokenizer to represent many words without needing a separate vocabulary entry for every possible word.
 
 
-============================================================
-6. WHAT IS BPE?
-============================================================
+# 6. WHAT IS BPE?
 
 BPE means:
 
@@ -328,9 +316,7 @@ becomes:
 This is the fundamental idea behind BPE.
 
 
-============================================================
-7. BPE EXAMPLE
-============================================================
+# 7. BPE EXAMPLE
 
 Suppose our training corpus contains:
 
@@ -388,9 +374,8 @@ Then the vocabulary grows:
 BPE continues doing this repeatedly.
 
 
-============================================================
-8. THE CODE: get_pair_stats()
-============================================================
+# 8. THE CODE: get_pair_stats()
+
 
 The function:
 
@@ -419,9 +404,9 @@ The purpose is:
     Find which neighboring pieces occur most frequently.
 
 
-============================================================
-9. THE CODE: merge_pair()
-============================================================
+
+# 9. THE CODE: merge_pair()
+
 
 Suppose:
 
@@ -446,9 +431,9 @@ The new token is:
 The function performs this transformation across the current vocabulary representation.
 
 
-============================================================
-10. THE BPE TRAINING LOOP
-============================================================
+
+# 10. THE BPE TRAINING LOOP
+
 
 The main BPE loop does:
 
@@ -493,9 +478,9 @@ Conceptually:
 The repository uses a small number of merges so that the process can be observed and understood.
 
 
-============================================================
-11. WHAT IS </w>?
-============================================================
+
+# 11. WHAT IS </w>?
+
 
 The tokenizer uses:
 
@@ -535,11 +520,9 @@ can be represented differently while still sharing:
 The exact representation used by production tokenizers can differ.
 
 
-============================================================
-12. IMPORTANT TOKENIZER LIMITATION
-============================================================
+# 12. IMPORTANT TOKENIZER LIMITATION
 
-The tokenizer in this lesson is intentionally simple.
+The tokenizer in this file is intentionally simple.
 
 It:
 
@@ -557,14 +540,14 @@ This distinction is extremely important.
 
 There are two different ideas:
 
-    Educational BPE tokenizer
+    Simplified BPE tokenizer
 
 versus:
 
     Production Llama tokenizer
 
 
-The lesson is teaching:
+The file is implementing:
 
     "How does BPE work?"
 
@@ -572,9 +555,7 @@ The lesson is teaching:
 It is not attempting to reproduce the exact tokenizer used by a production Llama model.
 
 
-============================================================
-13. TOKENIZER MENTAL MODEL
-============================================================
+# 13. TOKENIZER MENTAL MODEL
 
 Think:
 
@@ -606,9 +587,8 @@ not:
     "The dog is happy"
 
 
-============================================================
-14. LESSON 3 — ATTENTION
-============================================================
+
+# 14. FILE 3 — ATTENTION
 
 File:
 
@@ -637,9 +617,7 @@ refer to?
 Attention allows the model to learn relationships between tokens.
 
 
-============================================================
-15. HIDDEN STATES
-============================================================
+# 15. HIDDEN STATES
 
 After tokenization, token IDs are converted into vectors.
 
@@ -681,9 +659,7 @@ Meaning:
     128 values per token
 
 
-============================================================
-16. Q, K AND V
-============================================================
+# 16. Q, K AND V
 
 Attention transforms the hidden states into:
 
@@ -713,9 +689,7 @@ The code creates:
 using linear layers.
 
 
-============================================================
-17. WHAT DOES QUERY MEAN?
-============================================================
+# 17. WHAT DOES QUERY MEAN?
 
 Think of Query as:
 
@@ -748,9 +722,7 @@ and uses the resulting scores to decide how much of each:
 should be used.
 
 
-============================================================
-18. MULTI-HEAD ATTENTION
-============================================================
+# 18. MULTI-HEAD ATTENTION
 
 Instead of performing one giant attention operation, the model divides the hidden representation into multiple heads.
 
@@ -788,11 +760,9 @@ Conceptually:
 Each head can learn different relationships.
 
 
-============================================================
-19. GROUPED QUERY ATTENTION
-============================================================
+# 19. GROUPED QUERY ATTENTION
 
-The lesson demonstrates:
+The file demonstrates:
 
     Grouped Query Attention
 
@@ -847,9 +817,7 @@ Conceptually:
 This reduces the amount of Key/Value state that must be maintained.
 
 
-============================================================
-20. WHY GQA?
-============================================================
+# 20. WHY GQA?
 
 Traditional Multi-Head Attention might have:
 
@@ -870,9 +838,7 @@ This means fewer K/V representations.
 This is particularly useful for reducing memory requirements during inference.
 
 
-============================================================
-21. ATTENTION SHAPES
-============================================================
+# 21. ATTENTION SHAPES
 
 Suppose:
 
@@ -921,9 +887,7 @@ After GQA repeats K and V:
 This allows Q, K and V to participate in the attention calculation head-by-head.
 
 
-============================================================
-22. ROTARY POSITIONAL EMBEDDINGS
-============================================================
+# 22. ROTARY POSITIONAL EMBEDDINGS
 
 Attention by itself does not inherently know the order of tokens.
 
@@ -951,9 +915,7 @@ which means:
     Rotary Positional Embeddings
 
 
-============================================================
-23. INTUITION FOR RoPE
-============================================================
+# 23. INTUITION FOR RoPE
 
 RoPE rotates parts of Query and Key vectors based on token position.
 
@@ -979,9 +941,7 @@ and:
 The important property is that the attention calculation can capture relative positional relationships.
 
 
-============================================================
-24. WHY DOES RoPE USE ROTATION?
-============================================================
+# 24. WHY DOES RoPE USE ROTATION?
 
 Imagine a 2D vector:
 
@@ -994,7 +954,7 @@ A rotation transforms it based on an angle.
 RoPE applies this idea to pairs of dimensions in the Query and Key vectors.
 
 
-The lesson implements this using complex numbers:
+The file implements this using complex numbers:
 
     real + imaginary
 
@@ -1013,11 +973,9 @@ Conceptually:
     rotated vector
 
 
-============================================================
-25. torch.outer() IN RoPE
-============================================================
+# 25. torch.outer() IN RoPE
 
-The lesson contains:
+The file contains:
 
     torch.outer(t, inv_freq)
 
@@ -1051,9 +1009,7 @@ produces:
 This creates the position/frequency combinations needed for RoPE.
 
 
-============================================================
-26. RoPE IS APPLIED TO Q AND K
-============================================================
+# 26. RoPE IS APPLIED TO Q AND K
 
 An important concept:
 
@@ -1063,7 +1019,7 @@ An important concept:
 The Value vectors are not rotated.
 
 
-The lesson explicitly applies RoPE before repeating K/V for GQA.
+The file explicitly applies RoPE before repeating K/V for GQA.
 
 
 So the conceptual order is:
@@ -1079,11 +1035,9 @@ So the conceptual order is:
       Attention
 
 
-============================================================
-27. Q/K NORMALIZATION
-============================================================
+# 27. Q/K NORMALIZATION
 
-The lesson includes optional:
+The file includes optional:
 
     QK normalization
 
@@ -1117,7 +1071,7 @@ Then:
 is used for attention.
 
 
-The lesson uses an epsilon value such as:
+The file uses an epsilon value such as:
 
     1e-6
 
@@ -1125,9 +1079,7 @@ The lesson uses an epsilon value such as:
 to improve numerical stability.
 
 
-============================================================
-28. WHAT IS EPSILON?
-============================================================
+# 28. WHAT IS EPSILON?
 
 Epsilon is a tiny positive number.
 
@@ -1148,9 +1100,7 @@ to prevent numerical problems such as division by zero.
 This is a very common technique in neural networks.
 
 
-============================================================
-29. CAUSAL MASK
-============================================================
+# 29. CAUSAL MASK
 
 When generating text, the current token cannot look into the future.
 
@@ -1192,11 +1142,9 @@ This is called:
     Causal Attention
 
 
-============================================================
-30. HOW THE CAUSAL MASK WORKS
-============================================================
+# 30. HOW THE CAUSAL MASK WORKS
 
-The lesson creates an upper-triangular mask with:
+The file creates an upper-triangular mask with:
 
     -inf
 
@@ -1231,9 +1179,7 @@ After softmax:
 Therefore future tokens receive effectively zero attention probability.
 
 
-============================================================
-31. SCALED DOT-PRODUCT ATTENTION
-============================================================
+# 31. SCALED DOT-PRODUCT ATTENTION
 
 The fundamental attention equation is:
 
@@ -1242,7 +1188,7 @@ The fundamental attention equation is:
     softmax(QK^T / sqrt(d)) V
 
 
-The lesson follows this sequence:
+The file follows this sequence:
 
     1. Q × Kᵀ
 
@@ -1255,9 +1201,7 @@ The lesson follows this sequence:
     5. Multiply by V
 
 
-============================================================
-32. STEP 1 — Q × Kᵀ
-============================================================
+# 32. STEP 1 — Q × Kᵀ
 
 Suppose:
 
@@ -1303,9 +1247,7 @@ The final:
 matrix represents how every token relates to every other token.
 
 
-============================================================
-33. STEP 2 — SCALE
-============================================================
+# 33. STEP 2 — SCALE
 
 The attention scores are scaled:
 
@@ -1323,9 +1265,7 @@ Very large values can make softmax extremely sharp.
 Scaling keeps the values in a more useful numerical range.
 
 
-============================================================
-34. STEP 3 — APPLY CAUSAL MASK
-============================================================
+# 34. STEP 3 — APPLY CAUSAL MASK
 
 We add the mask:
 
@@ -1342,9 +1282,7 @@ Therefore after softmax:
     future probability ≈ 0
 
 
-============================================================
-35. STEP 4 — SOFTMAX
-============================================================
+# 35. STEP 4 — SOFTMAX
 
 Softmax converts attention scores into probabilities.
 
@@ -1370,9 +1308,7 @@ These values:
 Therefore they form an attention probability distribution.
 
 
-============================================================
-36. STEP 5 — MULTIPLY BY V
-============================================================
+# 36. STEP 5 — MULTIPLY BY V
 
 The attention probabilities are multiplied by Value vectors.
 
@@ -1404,9 +1340,7 @@ So attention is effectively:
     "Take a weighted combination of information from other tokens."
 
 
-============================================================
-37. ATTENTION OUTPUT
-============================================================
+# 37. ATTENTION OUTPUT
 
 After calculating attention:
 
@@ -1416,7 +1350,7 @@ After calculating attention:
 the heads are combined.
 
 
-The lesson does:
+The file does:
 
     transpose
         ↓
@@ -1438,9 +1372,7 @@ Then the output projection:
 maps the result back into the hidden dimension.
 
 
-============================================================
-38. COMPLETE ATTENTION PIPELINE
-============================================================
+# 38. COMPLETE ATTENTION PIPELINE
 
 The entire attention operation can be remembered as:
 
@@ -1486,9 +1418,7 @@ The entire attention operation can be remembered as:
         Attention Output
 
 
-============================================================
-39. LESSON 4 — FEED FORWARD
-============================================================
+# 39. FILE 4 — FEED FORWARD
 
 File:
 
@@ -1527,16 +1457,14 @@ A simplified Transformer block is:
     Output
 
 
-============================================================
-40. RMSNORM
-============================================================
+# 40. RMSNORM
 
 RMSNorm means:
 
     Root Mean Square Normalization
 
 
-The lesson computes the mean of squared values:
+The file computes the mean of squared values:
 
     mean(x²)
 
@@ -1557,9 +1485,7 @@ A learned weight is then applied.
 The goal is to keep activations numerically well behaved.
 
 
-============================================================
-41. WHY NORMALIZATION?
-============================================================
+# 41. WHY NORMALIZATION?
 
 Neural networks repeatedly transform values.
 
@@ -1576,9 +1502,7 @@ Think of it as:
     before performing another large transformation.
 
 
-============================================================
-42. RMSNORM EQUATION
-============================================================
+# 42. RMSNORM EQUATION
 
 A simplified RMSNorm equation is:
 
@@ -1601,9 +1525,7 @@ Then:
 The learned weight allows the model to determine an appropriate scale during training.
 
 
-============================================================
-43. INTERMEDIATE SIZE
-============================================================
+# 43. INTERMEDIATE SIZE
 
 The Feed Forward Network expands the hidden representation.
 
@@ -1633,11 +1555,9 @@ Conceptually:
 This expansion gives the model additional capacity to transform the representation.
 
 
-============================================================
-44. SWIGLU
-============================================================
+# 44. SWIGLU
 
-The lesson uses a gated feed-forward architecture called:
+The file uses a gated feed-forward architecture called:
 
     SwiGLU
 
@@ -1658,9 +1578,7 @@ There are three important projections:
     down_proj
 
 
-============================================================
-45. GATE PROJECTION
-============================================================
+# 45. GATE PROJECTION
 
 The first projection is:
 
@@ -1692,9 +1610,7 @@ The result is called:
     gate
 
 
-============================================================
-46. UP PROJECTION
-============================================================
+# 46. UP PROJECTION
 
 The second projection is:
 
@@ -1728,9 +1644,7 @@ and:
 have matching shapes.
 
 
-============================================================
-47. SILU
-============================================================
+# 47. SILU
 
 SiLU means:
 
@@ -1755,9 +1669,7 @@ In PyTorch:
 can be used.
 
 
-============================================================
-48. WHY HAVE A GATE?
-============================================================
+# 48. WHY HAVE A GATE?
 
 The gate allows the network to control which parts of the representation should be emphasized.
 
@@ -1804,9 +1716,7 @@ then:
 This creates the gated representation.
 
 
-============================================================
-49. ELEMENT-WISE MULTIPLICATION
-============================================================
+# 49. ELEMENT-WISE MULTIPLICATION
 
 This is very important.
 
@@ -1848,9 +1758,7 @@ Matrix multiplication would be represented conceptually as:
 in PyTorch.
 
 
-============================================================
-50. DOWN PROJECTION
-============================================================
+# 50. DOWN PROJECTION
 
 After gating:
 
@@ -1876,9 +1784,7 @@ So the overall shape transformation is:
     hidden_size
 
 
-============================================================
-51. COMPLETE SWIGLU PIPELINE
-============================================================
+# 51. COMPLETE SWIGLU PIPELINE
 
 The Feed Forward Network is:
 
@@ -1914,9 +1820,7 @@ Mathematically:
         )
 
 
-============================================================
-52. RESIDUAL CONNECTION
-============================================================
+# 52. RESIDUAL CONNECTION
 
 The Feed Forward output is not simply returned by itself.
 
@@ -1932,15 +1836,13 @@ This is called a:
     Residual Connection
 
 
-The lesson explicitly demonstrates:
+The file explicitly demonstrates:
 
     final_output =
         input_to_ffn_block + ffn_output
 
 
-============================================================
-53. WHY RESIDUAL CONNECTIONS?
-============================================================
+# 53. WHY RESIDUAL CONNECTIONS?
 
 Imagine stacking many Transformer layers.
 
@@ -1968,11 +1870,9 @@ The original information has a direct path through the network.
 Residual connections also help gradient flow during training.
 
 
-============================================================
-54. COMPLETE TRANSFORMER BLOCK
-============================================================
+# 54. COMPLETE TRANSFORMER BLOCK
 
-Now we can combine the attention and Feed Forward lessons.
+Now we can combine the attention and Feed Forward files.
 
 
 The structure is:
@@ -2004,13 +1904,11 @@ The structure is:
 This is the core Transformer block pattern.
 
 
-============================================================
-55. HOW THE THREE LESSONS CONNECT
-============================================================
+# 55. HOW THE THREE FILES CONNECT
 
 The connection is:
 
-    LESSON 2
+    FILE 2
 
     Text
       ↓
@@ -2032,7 +1930,7 @@ The connection is:
           ↓
 
 
-    LESSON 3
+    FILE 3
 
     Attention
 
@@ -2052,7 +1950,7 @@ The connection is:
           ↓
 
 
-    LESSON 4
+    FILE 4
 
     Feed Forward
 
@@ -2069,9 +1967,7 @@ The connection is:
     NEXT TRANSFORMER LAYER
 
 
-============================================================
-56. EXAMPLE WITH "THE DOG"
-============================================================
+# 56. EXAMPLE WITH "THE DOG"
 
 Suppose the user enters:
 
@@ -2253,9 +2149,7 @@ Then the new sequence becomes:
 The process repeats.
 
 
-============================================================
-57. TENSOR SHAPE CHEAT SHEET
-============================================================
+# 57. TENSOR SHAPE CHEAT SHEET
 
 Assume:
 
@@ -2341,11 +2235,9 @@ Final FFN output:
     [2, 10, 128]
 
 
-============================================================
-58. IMPORTANT PYTORCH OPERATIONS
-============================================================
+# 58. IMPORTANT PYTORCH OPERATIONS
 
-Several PyTorch operations in these lessons are worth understanding deeply.
+Several PyTorch operations in these files are worth understanding deeply.
 
 
 ------------------------------------------------------------
@@ -2482,9 +2374,7 @@ is:
 The RoPE implementation uses this idea to create position/frequency combinations.
 
 
-============================================================
-59. IMPORTANT DIFFERENCE: * VS @
-============================================================
+# 59. IMPORTANT DIFFERENCE: * VS @
 
 This is one of the most important PyTorch concepts.
 
@@ -2533,9 +2423,7 @@ In SwiGLU:
 is element-wise multiplication.
 
 
-============================================================
-60. WHAT IS SOFTMAX?
-============================================================
+# 60. WHAT IS SOFTMAX?
 
 Softmax converts numbers into a probability distribution.
 
@@ -2567,9 +2455,7 @@ and later in:
     Next-token prediction
 
 
-============================================================
-61. ATTENTION PROBABILITIES VS TOKEN PROBABILITIES
-============================================================
+# 61. ATTENTION PROBABILITIES VS TOKEN PROBABILITIES
 
 Do not confuse these two.
 
@@ -2608,22 +2494,20 @@ Token prediction:
 These are different probability distributions.
 
 
-============================================================
-62. EDUCATIONAL IMPLEMENTATION VS REAL LLAMA 4
-============================================================
+# 62. SIMPLIFIED IMPLEMENTATION VS REAL LLM
 
 This distinction is extremely important.
 
 
-The repository is designed to teach concepts.
+The repository is designed to implement concepts.
 
-It is NOT a complete implementation of the production Llama 4 model.
-
-
-The lesson simplifies many things so that the concepts are easier to understand.
+It is NOT a complete implementation of the production LLM model.
 
 
-For example, the attention lesson uses:
+The implementation simplifies many things so that the concepts are easier to understand.
+
+
+For example, the attention file uses:
 
     hidden_size = 128
 
@@ -2634,17 +2518,15 @@ For example, the attention lesson uses:
     max_position_embeddings = 256
 
 
-These are small educational values.
+These are small implementation values.
 
 
 A production model uses much larger dimensions and additional engineering.
 
 
-============================================================
-63. SIMPLIFIED RoPE
-============================================================
+# 63. SIMPLIFIED RoPE
 
-The lesson explicitly describes its RoPE implementation as:
+The file explicitly describes its RoPE implementation as:
 
     Simplified
 
@@ -2657,26 +2539,24 @@ Production Llama 4 has additional behavior around positional embeddings.
 
 Therefore:
 
-    Do not copy this educational RoPE implementation
-    and assume it is a drop-in production Llama 4 implementation.
+    Do not copy this simplified RoPE implementation
+    and assume it is a drop-in production LLM implementation.
 
 
-The lesson's goal is:
+The file's goal is:
 
     Understand how RoPE works.
 
 
-============================================================
-64. SIMPLIFIED ATTENTION MASK
-============================================================
+# 64. SIMPLIFIED ATTENTION MASK
 
-The lesson creates a simple causal mask.
+The file creates a simple causal mask.
 
 
 The comments explicitly note that actual Llama 4 masking can be more complex.
 
 
-The educational mask is essentially:
+The simplified mask is essentially:
 
     future position → -inf
 
@@ -2693,11 +2573,9 @@ Production implementations may need to consider:
     - implementation-specific optimizations
 
 
-============================================================
-65. QK NORMALIZATION TERMINOLOGY
-============================================================
+# 65. QK NORMALIZATION TERMINOLOGY
 
-The lesson calls the operation:
+The file calls the operation:
 
     L2 normalization
 
@@ -2719,11 +2597,9 @@ For learning purposes, the important concept is:
 Do not get too distracted by the naming at this stage.
 
 
-============================================================
-66. RMSNORM VS LAYERNORM
-============================================================
+# 66. RMSNORM VS LAYERNORM
 
-The Feed Forward lesson discusses normalization and uses:
+The Feed Forward file discusses normalization and uses:
 
     RMSNorm
 
@@ -2745,9 +2621,7 @@ For this project, remember:
     Llama-family architectures use RMSNorm-style normalization.
 
 
-============================================================
-67. WHY DOES THE FEED FORWARD NETWORK EXIST?
-============================================================
+# 67. WHY DOES THE FEED FORWARD NETWORK EXIST?
 
 Attention answers:
 
@@ -2772,9 +2646,7 @@ A useful mental model is:
 The Transformer alternates these operations.
 
 
-============================================================
-68. ATTENTION VS FEED FORWARD
-============================================================
+# 68. ATTENTION VS FEED FORWARD
 
 Think of a classroom.
 
@@ -2806,9 +2678,7 @@ Then:
 This repeated processing is what gives Transformers substantial representational power.
 
 
-============================================================
-69. THE COMPLETE TRANSFORMER MENTAL MODEL
-============================================================
+# 69. THE COMPLETE TRANSFORMER MENTAL MODEL
 
 A Transformer layer can be remembered as:
 
@@ -2850,9 +2720,7 @@ And multiple layers are stacked:
     Layer N
 
 
-============================================================
-70. WHAT THE MODEL ACTUALLY LEARNS
-============================================================
+# 70. WHAT THE MODEL ACTUALLY LEARNS
 
 During training, the model learns the parameters of:
 
@@ -2880,9 +2748,7 @@ Initially these parameters are essentially random.
 Training changes them so that the model becomes better at predicting the next token.
 
 
-============================================================
-71. WHY THIS MATTERS
-============================================================
+# 71. WHY THIS MATTERS
 
 When you see:
 
@@ -2948,9 +2814,7 @@ There is no single "generate sentence" operation inside the neural network.
 It repeatedly predicts the next token.
 
 
-============================================================
-72. HOW TO STUDY THESE FILES
-============================================================
+# 72. HOW TO STUDY THESE FILES
 
 Do not read the files from top to bottom trying to memorize every line.
 
@@ -3117,9 +2981,7 @@ Understand:
     residual connection
 
 
-============================================================
-73. RECOMMENDED DEBUGGING APPROACH
-============================================================
+# 73. RECOMMENDED DEBUGGING APPROACH
 
 When learning neural networks, always print tensor shapes.
 
@@ -3139,7 +3001,7 @@ For example:
     print(attn_output.shape)
 
 
-For this lesson, the shapes are often more useful than the actual numerical values.
+For this file, the shapes are often more useful than the actual numerical values.
 
 
 Ask yourself:
@@ -3158,9 +3020,7 @@ Ask yourself:
 If you can answer those questions, you are understanding the implementation.
 
 
-============================================================
-74. KEY SHAPES TO MEMORIZE
-============================================================
+# 74. KEY SHAPES TO MEMORIZE
 
 General hidden state:
 
@@ -3213,9 +3073,7 @@ and:
     every key position.
 
 
-============================================================
-75. COMMON BEGINNER CONFUSIONS
-============================================================
+# 75. COMMON BEGINNER CONFUSIONS
 
 
 CONFUSION 1:
@@ -3302,9 +3160,7 @@ ANSWER:
     through deep networks.
 
 
-============================================================
-76. COMMON ENGINEERING MISTAKES
-============================================================
+# 76. COMMON ENGINEERING MISTAKES
 
 When implementing attention, watch for:
 
@@ -3338,11 +3194,9 @@ When implementing BPE, watch for:
     - Vocabulary/index mismatch
 
 
-============================================================
-77. WHAT THIS REPOSITORY DOES NOT IMPLEMENT
-============================================================
+# 77. WHAT THIS REPOSITORY DOES NOT IMPLEMENT
 
-These three lessons do not constitute a complete production Llama 4 model.
+These three files do not constitute a complete production Llama 4 model.
 
 
 They do not provide the entire:
@@ -3372,11 +3226,9 @@ Instead they focus on three important building blocks:
 A complete model requires additional components.
 
 
-============================================================
-78. WHAT IS STILL NEEDED FOR A COMPLETE LLM?
-============================================================
+# 78. WHAT IS STILL NEEDED FOR A COMPLETE LLM?
 
-To turn these lessons into a complete language model, we would need:
+To turn these files into a complete language model, we would need:
 
 
     Tokenizer
@@ -3428,11 +3280,9 @@ For training we would additionally need:
     Checkpoint
 
 
-============================================================
-79. EDUCATIONAL MODEL VS PRODUCTION MODEL
-============================================================
+# 79. SIMPLIFIED MODEL VS PRODUCTION MODEL
 
-This is perhaps the most important engineering lesson.
+This is perhaps the most important engineering file.
 
 
 The code in this repository is intentionally:
@@ -3440,7 +3290,6 @@ The code in this repository is intentionally:
     small
     readable
     verbose
-    educational
     heavily commented
 
 
@@ -3457,20 +3306,18 @@ Production LLM implementations are typically:
 
 Therefore:
 
-    Do not judge the educational implementation
+    Do not judge the simplified implementation
     by production engineering standards.
 
 
 Instead ask:
 
-    "What concept is this code trying to teach me?"
+    "What concept is this code trying to implement?"
 
 
-============================================================
-80. RELATIONSHIP TO REAL LLAMA 4
-============================================================
+# 80. RELATIONSHIP TO REAL LLAMA 4
 
-The lessons are inspired by real Llama 4 architectural concepts.
+The files are inspired by real Llama 4 architectural concepts.
 
 
 Real Llama 4 implementations contain concepts such as:
@@ -3484,7 +3331,7 @@ Real Llama 4 implementations contain concepts such as:
     - residual connections
 
 
-However, real Llama 4 contains substantially more engineering and architectural detail than these lessons.
+However, real Llama 4 contains substantially more engineering and architectural detail than these files.
 
 
 For example, production implementations include additional handling for:
@@ -3511,9 +3358,7 @@ rather than:
     "A complete Llama 4 implementation"
 
 
-============================================================
-81. THE MOST IMPORTANT EQUATION
-============================================================
+# 81. THE MOST IMPORTANT EQUATION
 
 For attention, remember:
 
@@ -3557,9 +3402,7 @@ Break it into steps:
 If you understand this equation and the tensor shapes behind it, you understand the core of Transformer attention.
 
 
-============================================================
-82. THE MOST IMPORTANT SWIGLU EQUATION
-============================================================
+# 82. THE MOST IMPORTANT SWIGLU EQUATION
 
 Remember:
 
@@ -3592,12 +3435,10 @@ Break it into:
           output
 
 
-If you understand this equation, you understand the core of the Feed Forward portion of the lesson.
+If you understand this equation, you understand the core of the Feed Forward portion of the file.
 
 
-============================================================
-83. THE MOST IMPORTANT BPE IDEA
-============================================================
+# 83. THE MOST IMPORTANT BPE IDEA
 
 Remember:
 
@@ -3648,9 +3489,7 @@ and later:
 The tokenizer gradually learns useful subword units.
 
 
-============================================================
-84. THE THREE MOST IMPORTANT MENTAL MODELS
-============================================================
+# 84. THE THREE MOST IMPORTANT MENTAL MODELS
 
 
 BPE:
@@ -3680,9 +3519,7 @@ Together:
 form important pieces of the LLM.
 
 
-============================================================
-85. FINAL MENTAL MODEL
-============================================================
+# 85. FINAL MENTAL MODEL
 
 If you remember only one diagram from this README, remember this:
 
@@ -3746,9 +3583,7 @@ If you remember only one diagram from this README, remember this:
         REPEAT
 
 
-============================================================
-86. RECOMMENDED NEXT STEP
-============================================================
+# 86. RECOMMENDED NEXT STEP
 
 After understanding these three files, the next useful step is to build a small complete model around them.
 
@@ -3814,11 +3649,9 @@ to:
      Transformer and generate text."
 
 
-============================================================
-87. FINAL TAKEAWAY
-============================================================
+# 87. FINAL TAKEAWAY
 
-The three lessons teach three fundamental parts of an LLM.
+The three files implements three fundamental parts of an LLM.
 
 
 TOKENIZER:
@@ -3890,8 +3723,6 @@ And the overall language-model idea is:
 That repeated next-token prediction is the fundamental behavior of an autoregressive language model.
 
 
-============================================================
-88. ONE-SENTENCE SUMMARY
-============================================================
+# 88. ONE-SENTENCE SUMMARY
 
 The tokenizer converts text into numbers, attention lets token representations interact with each other, and the Feed Forward Network transforms those representations so that the Transformer can ultimately predict the next token.
