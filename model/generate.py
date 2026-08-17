@@ -397,3 +397,4 @@ if __name__ == "__main__":
 # ============================================================
 # RESULT
 # ============================================================
+# the dog is happy the dog is friendly the dog likes food the dog likes running the cat is happy the cat
