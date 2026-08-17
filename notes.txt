@@ -1,0 +1,76 @@
+LLM (Large Language Model) - AIs that you can chat wuth using text messages
+How LLMs work - LLM takes some text as input, analyzes it and predicts a next word that makes sense
+How does LLM Pick response
+    Greedy Sampling - Pick the highest-probability word
+    Random Sampling - Choose a word randomly based on the probability distribution
+    Top-k Sampling - Select from a number (k) most probable words
+Methods for selection from Probability Distribution
+    Temperature Sampling - Adjust the distribution's sharpness ie., Higher temperature = more randomness, Low temperature = more determinstic (closer to greedy sampling)
+LLM creates sementic meaning vertor embedding out of each work like
+    dog - [0.5, 0.1, 0.3] representing dog characterstic like 0.5 can be fluffyness (is how fluffy it is), mammalness (warm blodded mammals), socialness (enjoy interacting with others)
+    in real, sementic vertor embedding does not follow a set of order that first index represents fluffyness, it can be somthing else
+Now for a sentence like The dog ran quickly, if wanna make connection between two adjecent word like quickly is assocaited with ran, but we also wanna make association with dog as that states what ran quickly
+    so to overcome this, each word gets a new vector embedding representing context ie.,
+    this new vector embedding also stores the position information like word dog is 2 word behind quickly 
+    key - what context do i have
+        (dog) [0.54, 0.36, 0.74]
+    query - what context am i looking for
+        (quickly) [0.22, 0.64, 0.73]
+Context vertic embedding (1000's of number long) are lot smaller in size compared to sementic meaning vector embedding (100's of number long)
+Vector is an array of number and can also be coordinate in a point system
+Scores are calculated using dot product
+    dot product is calculated by drawing a perpendicular line (90 degree angle) from dog context line to quickly context line in a line graph 
+    so now the length of the quickly context line from zero to that perpendicular line is the score, ie., how much they overlap
+    score is normalized between 0 and 1 or in percentage and then the final score is overlapping length divide by total query length
+    dot product calculation lets take key (dog) [0.54, 0.36, 0.74] and query (quickly) [0.22, 0.64, 0.73]
+        so dot product is (dog[0] * quickly[0]) + (dog[1] * quickly[1]) + (dog[2] * quickly[2])
+        ie., (0.54 * 0.22) + (0.36 * 0.64) + (0.74 * 0.73) = single number score
+    higher the score, the more similar they are or it is more likely to select that word
+Now the we have dot product between words key and query, we will add them to the original sementic meaning vertor embedding to reflect our finding
+    we will create a new vector embedding to represent what you should get from me to encode my context and call it value vector embedding
+    ie., embed what context dog would give 
+    value (dog) [0.12, 0.84, 0.51]
+    value (quickly) [0.62, 0.24, 0.33]
+Then we put this value vector embedding thorugh a neural network called feed-forward
+    which strengthen the important context in value vector embedding and deminish the less important context in value vector embedding
+    so now quickly have more stronger relation to dog
+Key - K (what context do i have)
+Query - Q (what context am i looking for)
+Value - V (what you should get from me to encode my context)
+Before training
+    dog [0.5, 0.1, 0.3]
+During training
+              Learned during traning       Calculated
+    W^K   =   0.85, 0.31, 0.42  => Q   =   [0.34, 0.63, 0.54]   [((dog[0] * W^K[0][0]) + (dog[1] * W^K[1][0]) + (dog[2] * W^K[2][0])), ((dog[0] * W^K[0][1]) + (dog[1] * W^K[1][1]) + (dog[2] * W^K[2][1])), ((dog[0] * W^K[0][3]) + (dog[1] * W^K[1][3]) + (dog[2] * W^K[2][3]))]
+              0.19, 0.67, 0.91
+              0.46, 0.23, 0.78
+    W^Q   =   0.21, 0.98, 0.13  => K   =   [0.54, 0.36, 0.74]
+              0.75, 0.42, 0.61
+              0.39, 0.85, 0.29
+    W^V   =   0.54, 0.11, 0.76  => V   =   [0.73, 0.74, 0.23]
+              0.28, 0.93, 0.49
+              0.62, 0.17, 0.83
+Attention Weights Matrix
+    whenever we have a dimensional matrix, the upper right portion of the matrix is removed becuase that shows relation between the current word and the next word
+        as we want the model to predict the next word, we mark them 0 and normlize the rest of the value in that row so that they add up to 1
+        0.81, 0.42, 0.51    =>   0.81, 0.00, 0.00    =>   0.81, -infinity, -infinity    =>  softmax(number) =           e^number                    =   1.00, 0.00, 0.00      
+        0.67, 0.88, 0.72         0.67, 0.88, 0.00         0.67, 0.88, -infinity             e =~ 2.718          -------------------------------         0.45, 0.55, 0.00
+        0.87, 0.96, 1.16         0.87, 0.96, 1.16         0.87, 0.96, 1.16                  e^-infinity = 0     Sum of all e^number in that row         0.29, 0.32, 0.39
+    the diagnol values in the matrix will always be higher as they would represent the assocaition between the same word as it where we have the token against itself
+RoPE - Rotary position embeddings
+    encode relationship between each token position ie., distance between words and also order in which words appears
+    for a sentence like The dog ran quickly, if wanna make connection between two adjecent word like quickly is assocaited with ran, but we also wanna make association with dog as that states what ran quickly
+    this vector embedding also stores the position information like word dog is 2 word behind quickly 
+Matrix Multiplication
+    different size
+        X = 2 3
+        Y = 1 2
+            3 4
+        Result = (X[0]*Y[0][0])+(X[1]*Y[1][0]) (X[0]*Y[0][1])+(X[1]*Y[1][1]) = 2(1)+3(3) 2(2)+3(4)
+    same size
+        X = 1 2
+            3 4
+        Y = 5 6
+            7 8
+        Result = (X[0][0]*Y[0][0])+(X[0][1]*Y[1][0]) (X[0][0]*Y[0][1])+(X[0][1]*Y[1][1]) = 1(5)+2(7) 1(6)+2(8)
+                 (X[1][0]*Y[0][0])+(X[1][1]*Y[1][0]) (X[1][0]*Y[0][1])+(X[1][1]*Y[1][1])   3(5)+4(7) 3(6)+4(8)
